@@ -55,8 +55,12 @@ existing scripts, they do not ask you to rewrite them.
 hdrctl serve --port 5678
 ```
 
-A browser tab opens on the Studio. The jobs you just ran are there as boxes you
-can drag, connect and configure — and what you save is the same YAML you have in
+A browser tab opens on the Studio. If it opens inside the editor and stays
+blank, open the **Ports** tab at the bottom, find port **5678** and click the
+globe icon — GitHub refuses to display forwarded ports inside the embedded
+browser, so it has to be a real tab.
+
+The jobs you just ran are there as boxes you can drag, connect and configure — and what you save is the same YAML you have in
 this repository. The visual editor and the files are two views of one thing,
 not an export.
 

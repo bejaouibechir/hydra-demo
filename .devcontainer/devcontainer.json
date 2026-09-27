@@ -9,7 +9,7 @@
 
   "forwardPorts": [5678, 3307],
   "portsAttributes": {
-    "5678": { "label": "Hydra Studio", "onAutoForward": "openPreview" },
+    "5678": { "label": "Hydra Studio", "onAutoForward": "openBrowser" },
     "3307": { "label": "MySQL (demo)", "onAutoForward": "silent" }
   },
 
