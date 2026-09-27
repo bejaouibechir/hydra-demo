@@ -2,19 +2,27 @@
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/bejaouibechir/hydra-demo)
 
-One click. No install, no Python setup, no database to configure. A container
-starts, a MySQL database comes up beside it, and a working pipeline is waiting
-for you.
+One click. No install, no Python setup, no database to configure.
 
-[Hydra ETL](https://hydraetl.com) is an open-source ETL engine where pipelines
-are YAML manifests rather than code — versioned, reviewed in pull requests, and
-run from a terminal, a CI job or a visual editor.
+## Start here
 
----
+Once the editor has opened, type this in the terminal at the bottom:
+
+```bash
+./tour
+```
+
+It walks you through the whole thing in about five minutes — showing you each
+command before running it, so you can see what is happening. You do not have to
+write anything.
+
+If you would rather explore on your own, the rest of this page explains what is
+in front of you.
 
 ## What is in this repository
 
 ```
+tour                         the guided walkthrough (start here)
 data/orders.csv              200 sample orders
 db/init.sql                  the table MySQL creates on first start
 docker-compose.yml           your dev container and the MySQL one beside it
@@ -55,12 +63,8 @@ existing scripts, they do not ask you to rewrite them.
 hdrctl serve --port 5678
 ```
 
-A browser tab opens on the Studio. If it opens inside the editor and stays
-blank, open the **Ports** tab at the bottom, find port **5678** and click the
-globe icon — GitHub refuses to display forwarded ports inside the embedded
-browser, so it has to be a real tab.
-
-The jobs you just ran are there as boxes you can drag, connect and configure — and what you save is the same YAML you have in
+A browser tab opens on the Studio. The jobs you just ran are there as boxes you
+can drag, connect and configure — and what you save is the same YAML you have in
 this repository. The visual editor and the files are two views of one thing,
 not an export.
 

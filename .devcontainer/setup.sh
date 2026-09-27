@@ -19,11 +19,24 @@ try:
     print(f"    orders table reachable on host 'mysql' ({n} rows)")
 except Exception as e:
     print(f"    WARNING: could not reach MySQL yet: {e}")
-    print("    Steps 1 and 2 of the README still work. Try: docker compose logs mysql")
+    print("    Try: docker compose logs mysql")
 PY
 
+# The welcome message must appear in every new terminal, not just this one.
+cat >> "$HOME/.bashrc" <<'BASHRC'
+
+# --- Hydra demo welcome -------------------------------------------------
+if [ -z "$HYDRA_WELCOMED" ] && [ -f /workspaces/hydra-demo/tour ]; then
+  export HYDRA_WELCOMED=1
+  printf '\n'
+  printf '  \033[1mWelcome to the Hydra ETL demo.\033[0m\n\n'
+  printf '  Everything is already running. To be walked through it,\n'
+  printf '  type this one command:\n\n'
+  printf '      \033[36m./tour\033[0m\n\n'
+  printf '  \033[2m(about five minutes, nothing to install, nothing to type)\033[0m\n\n'
+fi
+BASHRC
+
 echo
-echo "Ready. Three things you can do now:"
-echo "  1. hdrctl workflow run workflows/nightly-report.yaml"
-echo "  2. hdrctl serve --port 5678      (Hydra Studio, opens in a browser tab)"
-echo "  3. cat parameters.yaml           (where the host and port come from)"
+echo "  Setup complete. Type  ./tour  to be walked through the demo."
+echo
