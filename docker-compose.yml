@@ -1,0 +1,20 @@
+# One MySQL container, on port 3307 so it never clashes with a local 3306.
+# Started for you by the devcontainer; `docker compose ps` to see it.
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: hydra-demo-mysql
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root-demo
+      MYSQL_DATABASE: orders_dev
+      MYSQL_USER: hydra
+      MYSQL_PASSWORD: hydra-demo-password
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot-demo"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
