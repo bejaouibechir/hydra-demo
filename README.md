@@ -17,7 +17,7 @@ run from a terminal, a CI job or a visual editor.
 ```
 data/orders.csv              200 sample orders
 db/init.sql                  the table MySQL creates on first start
-docker-compose.yml           the MySQL container your pipeline talks to
+docker-compose.yml           your dev container and the MySQL one beside it
 parameters.yaml              what can vary between environments
 environments/dev.yaml        values for dev
 environments/prod.yaml       values for prod
@@ -80,24 +80,40 @@ looks those up in the environment — here the devcontainer sets them for you, a
 in production they come from your CI variables or a secret manager. Nothing
 sensitive is written in a manifest, so the whole repository is safe to review.
 
-## The container
+## The two containers
+
+Your Codespace is itself a container, and MySQL runs in a second one beside it.
+They share a private network, which is why `parameters.yaml` says the host is
+simply `mysql` — the service name from `docker-compose.yml`. Prove it:
 
 ```bash
-docker compose ps
-docker compose logs mysql
+getent hosts mysql
 ```
 
-MySQL listens on **3307**, so it will not collide with anything you run at home.
-Hydra reaches it with the host and port declared in `parameters.yaml` — change
-those two values and the same pipeline talks to your own database.
+An IP comes back: that name only resolves because the two containers are on the
+same network. Nothing was installed on your machine, and no port had to be
+guessed.
+
+Port **3307** is also forwarded to your browser, so you can point a database
+client at it from outside if you want to look at the data yourself.
+
+To talk to your own database instead, change two values in `parameters.yaml` —
+or override them for a single run without editing anything:
+
+```bash
+hdrctl run jobs/export-report --env dev -P mysql_host=db.example.com -P mysql_port=3306
+```
 
 ## Running it locally instead
 
+Start just the database, then point the pipeline at it through the forwarded
+port:
+
 ```bash
+docker compose up -d mysql
 pip install "hydra-etl[server]>=0.11.3" mysql-connector-python
-docker compose up -d
 export MYSQL_USER=hydra MYSQL_PASSWORD=hydra-demo-password
-hdrctl workflow run workflows/nightly-report.yaml
+hdrctl workflow run workflows/nightly-report.yaml -P mysql_host=127.0.0.1 -P mysql_port=3307
 ```
 
 ## Next

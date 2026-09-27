@@ -2,12 +2,12 @@ version: "1.0"
 parameters:
   mysql_host:
     type: string
-    default: 127.0.0.1
-    description: MySQL host. 'mysql' inside the devcontainer network.
+    default: mysql
+    description: The MySQL container's service name on the compose network.
   mysql_port:
     type: string
-    default: "3307"
-    description: MySQL port.
+    default: "3306"
+    description: The port MySQL listens on inside its own container.
   mysql_database:
     type: string
     default: orders_dev

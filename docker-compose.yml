@@ -1,11 +1,23 @@
-# One MySQL container, on port 3307 so it never clashes with a local 3306.
-# Started for you by the devcontainer; `docker compose ps` to see it.
+# Two containers: the one you work in, and the database it talks to.
+# They share a network, so the pipeline reaches MySQL by its service name.
 services:
+  app:
+    image: mcr.microsoft.com/devcontainers/python:3.12
+    volumes:
+      - .:/workspaces/hydra-demo:cached
+    command: sleep infinity
+    environment:
+      MYSQL_USER: hydra
+      MYSQL_PASSWORD: hydra-demo-password
+      HYDRA_WORKSPACE: /workspaces
+    depends_on:
+      mysql:
+        condition: service_healthy
+
   mysql:
     image: mysql:8.0
-    container_name: hydra-demo-mysql
     ports:
-      - "3307:3306"
+      - "3307:3306"        # also forwarded to your browser, so you can connect from outside
     environment:
       MYSQL_ROOT_PASSWORD: root-demo
       MYSQL_DATABASE: orders_dev
