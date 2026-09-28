@@ -4,6 +4,10 @@
 # starting this container, so there is nothing to wait for here.
 set -e
 
+# Le bit executable ne survit pas toujours au depot. On le remet a chaque
+# creation du Codespace pour que ./tour ne puisse plus echouer devant le public.
+chmod +x "$(dirname "${BASH_SOURCE[0]}")/../tour" 2>/dev/null || true
+
 echo "==> Installing Hydra ETL"
 pip install --quiet --upgrade pip
 pip install --quiet "hydra-etl[server]>=0.11.3" mysql-connector-python
