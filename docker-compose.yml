@@ -6,6 +6,9 @@ services:
     volumes:
       - .:/workspaces/hydra-demo:cached
     command: sleep infinity
+    ports:
+      - "5678:5678"        # Hydra Studio: GitHub forwards ports from the Codespace host,
+                           # so the app container has to publish it, like MySQL below
     environment:
       MYSQL_USER: hydra
       MYSQL_PASSWORD: hydra-demo-password
