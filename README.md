@@ -60,10 +60,12 @@ existing scripts, they do not ask you to rewrite them.
 ### 2. Open Hydra Studio and look at the same pipeline
 
 ```bash
-hdrctl serve --port 5678
+./studio
 ```
 
-A browser tab opens on the Studio. The jobs you just ran are there as boxes you
+A browser tab opens on the Studio. If your browser blocks it, the command prints
+the address: Ctrl+click it. (Studio has to open in a real tab: GitHub does not
+let forwarded ports show inside the editor's built-in preview.) The jobs you just ran are there as boxes you
 can drag, connect and configure — and what you save is the same YAML you have in
 this repository. The visual editor and the files are two views of one thing,
 not an export.

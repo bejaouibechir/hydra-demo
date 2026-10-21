@@ -7,9 +7,13 @@
 
   "postCreateCommand": "bash .devcontainer/setup.sh",
 
+  // Studio is started at every Codespace start, in the background.
+  // ./studio opens it in a real browser tab (the built-in preview cannot show it).
+  "postStartCommand": "./studio --background",
+
   "forwardPorts": [5678, 3307],
   "portsAttributes": {
-    "5678": { "label": "Hydra Studio", "onAutoForward": "openBrowser" },
+    "5678": { "label": "Hydra Studio", "onAutoForward": "openBrowserOnce" },
     "3307": { "label": "MySQL (demo)", "onAutoForward": "silent" }
   },
 

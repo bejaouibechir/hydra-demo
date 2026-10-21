@@ -91,16 +91,13 @@ cat <<EOF
    Everything you just ran from the terminal can also be built and read
    in a visual editor. It is the same YAML — not an export.
 
-   To open it:
+   To open it, run the command below. It opens Studio in a new tab of
+   your browser, and prints its address in case the tab is blocked.
 
-     1. run the command below
-     2. open the ${B}PORTS${R} tab at the bottom of this window
-     3. on the line for port ${B}5678${R}, click the ${B}globe${R} icon
+     ${C}\$ ./studio${R}
 
    ${D}(The editor has to open in a real browser tab. GitHub does not allow
    forwarded ports to display inside the editor's built-in preview.)${R}
-
-     ${C}\$ hdrctl serve --port 5678${R}
 
    Inside, open the ${B}nightly-report${R} workflow to see the five steps as
    boxes you can move and connect.

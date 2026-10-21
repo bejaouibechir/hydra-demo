@@ -6,7 +6,7 @@ set -e
 
 # Le bit executable ne survit pas toujours au depot. On le remet a chaque
 # creation du Codespace pour que ./tour ne puisse plus echouer devant le public.
-chmod +x "$(dirname "${BASH_SOURCE[0]}")/../tour" 2>/dev/null || true
+chmod +x "$(dirname "${BASH_SOURCE[0]}")/../tour" "$(dirname "${BASH_SOURCE[0]}")/../studio" 2>/dev/null || true
 
 echo "==> Installing Hydra ETL"
 pip install --quiet --upgrade pip
@@ -38,6 +38,7 @@ if [ -z "$HYDRA_WELCOMED" ] && [ -f /workspaces/hydra-demo/tour ]; then
   printf '  type this one command:\n\n'
   printf '      \033[36m./tour\033[0m\n\n'
   printf '  \033[2m(about five minutes, nothing to install, nothing to type)\033[0m\n\n'
+  printf '  To open Hydra Studio, the visual editor, type:  \033[36m./studio\033[0m\n\n'
 fi
 BASHRC
 

@@ -1,0 +1,44 @@
+#!/bin/bash
+# Starts Hydra Studio if it is not running yet, then opens it in a real
+# browser tab. In a Codespace, the address is the forwarded HTTPS URL:
+# Studio cannot be shown inside the editor's built-in preview.
+#
+#   ./studio               start (if needed) and open the browser
+#   ./studio --background  start only, used when the Codespace starts
+
+PORT=5678
+LOG=/tmp/hydra-studio.log
+HEALTH="http://127.0.0.1:${PORT}/api/health"
+
+cd "$(dirname "$0")" || exit 1
+
+is_up() { curl -fs --max-time 2 "$HEALTH" >/dev/null 2>&1; }
+
+if ! is_up; then
+  [ "$1" = "--background" ] || echo "  Starting Hydra Studio…"
+  nohup setsid hdrctl serve --port "$PORT" >"$LOG" 2>&1 < /dev/null &
+  [ "$1" = "--background" ] && exit 0
+  for _ in $(seq 1 40); do is_up && break; sleep 0.5; done
+fi
+
+if ! is_up; then
+  echo "  Hydra Studio did not start. Last lines of $LOG:"
+  tail -n 20 "$LOG"
+  exit 1
+fi
+
+if [ -n "$CODESPACE_NAME" ]; then
+  URL="https://${CODESPACE_NAME}-${PORT}.${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN:-app.github.dev}/"
+else
+  URL="http://127.0.0.1:${PORT}/"
+fi
+
+printf '\n  \033[1mHydra Studio is running.\033[0m Open it here:\n\n      \033[36m%s\033[0m\n\n' "$URL"
+
+# In a Codespace, $BROWSER opens a tab in *your* browser, not in the container.
+if [ -n "$BROWSER" ] && "$BROWSER" "$URL" >/dev/null 2>&1; then
+  echo "  A browser tab is opening. If it does not, Ctrl+click the address above."
+else
+  echo "  Ctrl+click the address above to open it."
+fi
+printf '  \033[2mStop it with: pkill -f "hdrctl serve"\033[0m\n\n'
