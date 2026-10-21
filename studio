@@ -16,7 +16,10 @@ is_up() { curl -fs --max-time 2 "$HEALTH" >/dev/null 2>&1; }
 
 if ! is_up; then
   [ "$1" = "--background" ] || echo "  Starting Hydra Studio…"
-  nohup setsid hdrctl serve --port "$PORT" >"$LOG" 2>&1 < /dev/null &
+  # 0.0.0.0, not 127.0.0.1: in this Codespace the database runs in a second
+  # container (docker compose), and GitHub's port forwarding reaches Studio
+  # through the container network, not through its loopback interface.
+  nohup setsid hdrctl serve --host 0.0.0.0 --port "$PORT" >"$LOG" 2>&1 < /dev/null &
   [ "$1" = "--background" ] && exit 0
   for _ in $(seq 1 40); do is_up && break; sleep 0.5; done
 fi
